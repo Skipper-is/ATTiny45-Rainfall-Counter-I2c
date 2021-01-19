@@ -7,25 +7,28 @@
 
 
 #include <Wire.h>
+#include <avr/io.h>
+#include <avr/interrupt.h>
 
 uint8_t count = 0;
 const int buttonPin = PB1;
 int buttonState = 0;
 
 void setup() {
-  pinMode(buttonPin, INPUT_PULLUP);
   Wire.begin(8);                // join i2c bus with address #8
   Wire.onRequest(requestEvent); // register event
+  GIMSK = 0b00100000;
+  PCMSK = 0b00000010;
+  sei();
 }
 
 void loop() {
-  buttonState = digitalRead(buttonPin);
-  if (buttonState == LOW){
-    count = count +1;
-    delay(1000);
-    }
-   delay(100);
 }
+
+ISR(PCINT1_vect){
+  count =+1;
+  }
+
 
 // function that executes whenever data is requested by master
 // this function is registered as an event, see setup()
