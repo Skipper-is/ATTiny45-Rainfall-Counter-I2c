@@ -19,6 +19,7 @@ void setup() {
   Wire.onRequest(requestEvent); // register event
   GIMSK = 0b00100000;
   PCMSK = 0b00000010;
+  pinMode(buttonPin, INPUT_PULLUP);
   sei();
 }
 
